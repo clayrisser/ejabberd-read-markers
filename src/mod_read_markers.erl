@@ -136,15 +136,15 @@ on_muc_message(#message{from = Sender, meta = Meta} = Packet,
 on_muc_message(Packet, _MUCState, _FromNick) -> Packet.
 
 log_packet_send({_Stanza, _C2SState} = Acc) ->
-  ?INFO_MSG("SEND", []),
+  ?INFO_MSG("SEND", [?MODULE_VERSION, Host]),
   Acc.
 
 log_packet_receive({_Stanza, _C2SState} = Acc) ->
-  ?INFO_MSG("RECEIVE", []),
+  ?INFO_MSG("RECEIVE", [?MODULE_VERSION, Host]),
   Acc.
 
 log_packet_offline({_Action, _Msg} = Acc) ->
-  ?INFO_MSG("OFFLINE", []),
+  ?INFO_MSG("OFFLINE", [?MODULE_VERSION, Host]),
   Acc.
 
 %% This function is dedicated to read a database record of the last read
