@@ -6,7 +6,7 @@
          %% Database
          get_last/2, store_last/3, increment_unseen/2,
          %% Hooks
-         on_muc_iq/2, on_muc_message/3, log_packet_send/1, log_packet_receive/1, log_packet_offline/1
+         on_muc_iq/2, on_muc_message/3
         ]).
 
 %% https://stackoverflow.com/questions/55664628/unable-to-find-xmpp-hrl-and-ejabberd-hrl-in-ejabberd-19-02
@@ -43,12 +43,6 @@ start(Host, Opts) ->
   ejabberd_hooks:add(muc_process_iq, Host, ?MODULE, on_muc_iq, 51),
   %% Run the MUC message hook after mod_mam (50)
   ejabberd_hooks:add(muc_filter_message, Host, ?MODULE, on_muc_message, 51),
-  ejabberd_hooks:add(user_send_packet, Host, ?MODULE,
-                     log_packet_send, 42),
-  ejabberd_hooks:add(user_receive_packet, Host, ?MODULE,
-                     log_packet_receive, 42),
-  ejabberd_hooks:add(offline_message_hook, Host, ?MODULE,
-                     log_packet_offline, 42),
   %% Log the boot up
   ?INFO_MSG("[RM] Start read markers (v~s) for ~s", [?MODULE_VERSION, Host]),
   ok.
@@ -134,18 +128,6 @@ on_muc_message(#message{from = Sender, meta = Meta} = Packet,
 
 %% Match all MUC messages and pass back the unmodified packet.
 on_muc_message(Packet, _MUCState, _FromNick) -> Packet.
-
-log_packet_send({_Stanza, _C2SState} = Acc) ->
-  ?INFO_MSG("SEND", [?MODULE_VERSION, Host]),
-  Acc.
-
-log_packet_receive({_Stanza, _C2SState} = Acc) ->
-  ?INFO_MSG("RECEIVE", [?MODULE_VERSION, Host]),
-  Acc.
-
-log_packet_offline({_Action, _Msg} = Acc) ->
-  ?INFO_MSG("OFFLINE", [?MODULE_VERSION, Host]),
-  Acc.
 
 %% This function is dedicated to read a database record of the last read
 %% message for a given user/room combination. When the lookup fails we deliver
