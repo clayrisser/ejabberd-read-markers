@@ -194,7 +194,7 @@ mod_opt_type(db_type) -> fun(T) -> ejabberd_config:v_db(?MODULE, T) end;
 %% mod_opt_type(_) -> [db_type].
 mod_opt_type(_) -> [].
 
-mod_options(_Host) -> [].
+mod_options(Host) -> [{db_type, ejabberd_config:default_db(Host, ?MODULE)}].
 
 mod_doc() ->
   #{desc => "mod read modules",
