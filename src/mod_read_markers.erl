@@ -9,7 +9,10 @@
          on_muc_iq/2, on_muc_message/3
         ]).
 
--include("ejabberd.hrl").
+%% https://stackoverflow.com/questions/55664628/unable-to-find-xmpp-hrl-and-ejabberd-hrl-in-ejabberd-19-02
+%% https://github.com/hausgold/ejabberd-read-markers/issues/8
+%% https://github.com/hausgold/ejabberd-read-markers/issues/1
+%% -include("ejabberd.hrl").
 -include("logger.hrl").
 -include("xmpp.hrl").
 -include("mod_muc_room.hrl").
@@ -174,12 +177,14 @@ bare_jid(#jid{} = Jid) -> jid:encode(jid:remove_resource(Jid)).
 
 %% Convert the given affiliation dictionary to a map of bare JID's (binary) as
 %% keys and their corresponding +jid()+ records.
--spec affiliations_to_jid_list(?TDICT) -> map().
-affiliations_to_jid_list(Dict) ->
+%% https://github.com/hausgold/ejabberd-read-markers/issues/1
+%% https://github.com/hausgold/ejabberd-read-markers/issues/8
+-spec affiliations_to_jid_list(dict) -> map().
+affiliations_to_jid_list(dict) ->
   lists:foldl(fun({{User, Host, Resource}, _Aff}, Map) ->
                 Jid = jid:make(User, Host, Resource),
                 maps:put(bare_jid(Jid), Jid, Map)
-              end, #{}, dict:to_list(Dict)).
+              end, #{}, dict:to_list(dict)).
 
 %% Some ejabberd custom module API fullfilments
 depends(_Host, _Opts) -> [{mod_muc, hard}].

@@ -5,7 +5,10 @@
 -export([init/2, get_last/3, store_last/4, increment_unseen/3]).
 
 -include("mod_read_markers.hrl").
--include("ejabberd.hrl").
+%% https://stackoverflow.com/questions/55664628/unable-to-find-xmpp-hrl-and-ejabberd-hrl-in-ejabberd-19-02
+%% https://github.com/hausgold/ejabberd-read-markers/issues/8
+%% https://github.com/hausgold/ejabberd-read-markers/issues/1
+%% -include("ejabberd.hrl").
 -include("logger.hrl").
 -include("xmpp.hrl").
 -include("ejabberd_sql_pt.hrl").
