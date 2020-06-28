@@ -34,7 +34,7 @@
 -spec start(binary(), gen_mod:opts()) -> ok.
 start(Host, Opts) ->
   %% Initialize the database module
-  Mod = gen_mod:db_mod(Host, Opts, ?MODULE),
+  Mod = gen_mod:db_mod(Opts, ?MODULE),
   Mod:init(Host, Opts),
   %% Register the custom XMPP codec
   xmpp:register_codec(hg_read_markers),
@@ -65,8 +65,8 @@ reload(Host, NewOpts, OldOpts) ->
   %% Reload the custom XMPP codec
   xmpp:register_codec(hg_read_markers),
   %% Reload the database module on changes
-  NewMod = gen_mod:db_mod(Host, NewOpts, ?MODULE),
-  OldMod = gen_mod:db_mod(Host, OldOpts, ?MODULE),
+  NewMod = gen_mod:db_mod(NewOpts, ?MODULE),
+  OldMod = gen_mod:db_mod(OldOpts, ?MODULE),
   if NewMod /= OldMod -> NewMod:init(Host, NewOpts);
     true -> ok
   end,
