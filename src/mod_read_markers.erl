@@ -2,7 +2,7 @@
 -author("hermann.mayer92@gmail.com").
 -behaviour(gen_mod).
 -export([%% ejabberd module API
-         start/2, stop/1, reload/3, mod_opt_type/1, depends/2, mod_options/1,
+         start/2, stop/1, reload/3, mod_opt_type/1, depends/2, mod_options/1, mod_doc/0,
          %% Database
          get_last/2, store_last/3, increment_unseen/2,
          %% Hooks
@@ -195,3 +195,7 @@ mod_opt_type(db_type) -> fun(T) -> ejabberd_config:v_db(?MODULE, T) end;
 mod_opt_type(_) -> [].
 
 mod_options(_Host) -> [].
+
+mod_doc() ->
+  #{desc => "mod read modules",
+    opts => []}.
